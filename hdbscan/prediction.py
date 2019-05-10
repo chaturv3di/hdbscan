@@ -98,7 +98,7 @@ class PredictionData(object):
 
     def __init__(self, data, condensed_tree, min_samples,
                  tree_type='kdtree', metric='euclidean', **kwargs):
-        self.raw_data = data
+        self.raw_data = data.astype(np.float64)
         self.tree = self._tree_type_map[tree_type](self.raw_data,
                                                    metric=metric, **kwargs)
         self.core_distances = self.tree.query(data, k=min_samples)[0][:, -1]
@@ -443,6 +443,7 @@ def membership_vector(clusterer, points_to_predict):
     :py:func:`hdbscan.predict.all_points_membership_vectors`
 """
 
+    points_to_predict = points_to_predict.astype(np.float64)
     clusters = np.array(
         sorted(list(clusterer.condensed_tree_._select_clusters()))).astype(np.intp)
 
